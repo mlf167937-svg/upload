@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, send_from_directory
+from flask import Flask, render_template, request, redirect, send_from_directory, url_for
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -16,21 +16,28 @@ def index():
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
-    if "file" not in request.files:
+    file = request.files.get("file")
+
+    if not file or file.filename == "":
         return redirect("/")
-    
-    file = request.files["file"]
-    
-    if file.filename == "":
-        return redirect("/")
-    
+
     filename = secure_filename(file.filename)
     file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-    
+
     return redirect("/")
 
+# 🔽 DOWNLOAD ROUTE
+@app.route("/download/<filename>")
+def download_file(filename):
+    return send_from_directory(
+        app.config["UPLOAD_FOLDER"],
+        filename,
+        as_attachment=True
+    )
+
+# (opsional) lihat file di browser
 @app.route("/uploads/<filename>")
-def uploaded_file(filename):
+def view_file(filename):
     return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
 if __name__ == "__main__":
