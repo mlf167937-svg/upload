@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Upload File</title>
+    <title>Upload & Download File</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <div class="box">
-        <h2>Upload File</h2>
+        <h2>File Upload System</h2>
 
         <form action="/upload" method="post" enctype="multipart/form-data">
             <input type="file" name="file" required>
             <button type="submit">Upload</button>
         </form>
 
-        <h3>File yang sudah diupload:</h3>
+        <h3>Daftar File:</h3>
+
         <ul>
             {% for file in files %}
                 <li>
-                    <a href="/uploads/{{ file }}" target="_blank">{{ file }}</a>
+                    <span>{{ file }}</span>
+
+                    <!-- VIEW -->
+                    <a class="btn view" href="/uploads/{{ file }}" target="_blank">View</a>
+
+                    <!-- DOWNLOAD -->
+                    <a class="btn download" href="/download/{{ file }}">Download</a>
                 </li>
             {% endfor %}
         </ul>
