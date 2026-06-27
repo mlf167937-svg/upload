@@ -1,33 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Upload & Download File</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <title>File Share APK</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #111;
+            color: white;
+            text-align: center;
+        }
+
+        .box {
+            margin: 20px auto;
+            padding: 20px;
+            background: #222;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 10px;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 5px;
+            width: 90%;
+        }
+
+        .file {
+            background: #333;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        a {
+            color: lightblue;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <div class="box">
-        <h2>File Upload System</h2>
 
-        <form action="/upload" method="post" enctype="multipart/form-data">
+    <h1>📂 File Share (APK & File)</h1>
+
+    <div class="box">
+        <form action="/upload" method="POST" enctype="multipart/form-data">
             <input type="file" name="file" required>
             <button type="submit">Upload</button>
         </form>
-
-        <h3>Daftar File:</h3>
-
-        <ul>
-            {% for file in files %}
-                <li>
-                    <span>{{ file }}</span>
-
-                    <!-- VIEW -->
-                    <a class="btn view" href="/uploads/{{ file }}" target="_blank">View</a>
-
-                    <!-- DOWNLOAD -->
-                    <a class="btn download" href="/download/{{ file }}">Download</a>
-                </li>
-            {% endfor %}
-        </ul>
     </div>
+
+    <div class="box">
+        <h3>📁 File Tersedia</h3>
+        {% for file in files %}
+            <div class="file">
+                <p>{{ file }}</p>
+                <a href="/download/{{ file }}">⬇ Download</a> |
+                <a href="/delete/{{ file }}">🗑 Hapus</a>
+            </div>
+        {% endfor %}
+    </div>
+
 </body>
 </html>
